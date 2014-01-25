@@ -17,12 +17,14 @@ public class AddPersonActivity extends ListActivity implements LoaderManager.Loa
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY };
     public static final int LOADER_CONTACTS = 0;
 
+    SimpleCursorAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+        mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
                 null, new String[] { ContactsContract.Contacts.DISPLAY_NAME_PRIMARY }, new int[]{ android.R.id.text1 }, 0);
-        setListAdapter(adapter);
+        setListAdapter(mAdapter);
 
         getLoaderManager().initLoader(0, null, this);
     }
@@ -38,11 +40,11 @@ public class AddPersonActivity extends ListActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        ((SimpleCursorAdapter) getListAdapter()).swapCursor(cursor);
+        mAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        ((SimpleCursorAdapter) getListAdapter()).swapCursor(null);
+        mAdapter.swapCursor(null);
     }
 }

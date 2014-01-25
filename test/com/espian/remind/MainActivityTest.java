@@ -15,13 +15,7 @@ import static org.robolectric.Robolectric.shadowOf;
 public class MainActivityTest {
 
     @Test
-    public void test() {
-        assert 2 == 1 + 1;
-    }
-
-    @Test
     public void testWhenAddPersonIsClicked_ANewPersonActivityIsStarted() {
-
         MainActivity activity = Robolectric.buildActivity(MainActivity.class)
                 .create().start().resume().get();
 

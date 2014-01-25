@@ -45,7 +45,7 @@ public class RemindPersonViewTest {
 
         remindView.onPhotoLoaded(expectedBitmap);
 
-        Drawable setDrawable = remindView.mImageView.getDrawable();
+        Drawable setDrawable = remindView.photoImageView.getDrawable();
         assertEquals("Image set isn't a bitmap drawable", BitmapDrawable.class, setDrawable.getClass());
         assertEquals("Image set isn't the correct one", expectedBitmap, ((BitmapDrawable) setDrawable).getBitmap());
     }

@@ -40,7 +40,7 @@ public class RemindPersonViewTest {
     }
 
     @Test
-    public void testAPersonPhoto_IsSetOnTheImageView() {
+    public void testWhenAPersonPhotoIsLoaded_ItIsSetOnTheImageView() {
         Bitmap expectedBitmap = Bitmap.createBitmap(12, 12, Bitmap.Config.ALPHA_8);
 
         remindView.onPhotoLoaded(expectedBitmap);

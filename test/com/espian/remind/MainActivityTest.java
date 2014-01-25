@@ -25,4 +25,6 @@ public class MainActivityTest {
         assertEquals(shadowOf(intent).getIntentClass(), AddPersonActivity.class);
     }
 
+
+
 }

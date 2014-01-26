@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Remind</string>
     <string name="add_person">Add person</string>
+    <string name="test">Test data</string>
 </resources>

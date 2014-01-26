@@ -1,15 +1,28 @@
 package com.espian.remind;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 
-public class AddPersonActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+import com.espian.remind.data.ContactContractPersonLoader;
+import com.espian.remind.data.Person;
+import com.espian.remind.data.PersonLoader;
+import com.espian.remind.view.RemindPersonView;
+
+import java.util.concurrent.Executors;
+
+public class AddPersonActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String[] PROJECTION = {
                     ContactsContract.Contacts._ID,
@@ -17,14 +30,20 @@ public class AddPersonActivity extends ListActivity implements LoaderManager.Loa
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY };
     public static final int LOADER_CONTACTS = 0;
 
-    SimpleCursorAdapter mAdapter;
+    SimpleCursorAdapter adapter;
+    ContactContractPersonLoader personLoader;
+    AdapterView adapterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
-                null, new String[] { ContactsContract.Contacts.DISPLAY_NAME_PRIMARY }, new int[]{ android.R.id.text1 }, 0);
-        setListAdapter(mAdapter);
+        setContentView(R.layout.activity_grid);
+        personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
+        adapter = new PersonAdapter(this,
+                new int[]{ android.R.id.text1 },
+                personLoader);
+        adapterView = (AdapterView) findViewById(R.id.grid_view);
+        adapterView.setAdapter(adapter);
 
         getLoaderManager().initLoader(0, null, this);
     }
@@ -40,11 +59,37 @@ public class AddPersonActivity extends ListActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mAdapter.swapCursor(cursor);
+        adapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mAdapter.swapCursor(null);
+        adapter.swapCursor(null);
     }
+
+    public static class PersonAdapter extends SimpleCursorAdapter {
+
+        private final Context context;
+        private final PersonLoader loader;
+
+        public PersonAdapter(Context context, int[] to, PersonLoader loader) {
+            super(context, R.layout.item_person, null, new String[] { ContactsContract.Contacts.DISPLAY_NAME_PRIMARY }, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            this.context = context;
+            this.loader = loader;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_person, parent, false);
+            }
+
+            getCursor().moveToPosition(position);
+            Person thisRow = Person.fromCursor(getCursor());
+            ((RemindPersonView) convertView).setPerson(loader, thisRow);
+
+            return convertView;
+        }
+    }
+
 }

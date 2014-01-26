@@ -2,7 +2,6 @@ package com.espian.remind;
 
 import android.app.LoaderManager;
 import android.database.Cursor;
-import android.widget.SimpleCursorAdapter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +38,7 @@ public class AddPersonActivityTest {
     public void whenActivityIsCreated_TheListIsBackedByACursorAdapter() {
         AddPersonActivity activity = Robolectric.buildActivity(AddPersonActivity.class)
                 .create().get();
-        assertEquals(SimpleCursorAdapter.class, activity.getListAdapter().getClass());
+        assertEquals(AddPersonActivity.PersonAdapter.class, activity.adapterView.getAdapter().getClass());
     }
 
     @Test
@@ -57,7 +56,7 @@ public class AddPersonActivityTest {
         AddPersonActivity activity = Robolectric.buildActivity(AddPersonActivity.class).create().get();
         activity.onLoadFinished(null, swappedCursor);
 
-        Cursor actualResult = activity.mAdapter.getCursor();
+        Cursor actualResult = activity.adapter.getCursor();
 
         assertEquals("Cursor result is not swapped in", swappedCursor, actualResult);
     }

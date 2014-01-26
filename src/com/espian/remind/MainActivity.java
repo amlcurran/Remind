@@ -30,6 +30,10 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(this, AddPersonActivity.class));
                 return true;
 
+            case R.id.menu_test:
+                startActivity(new Intent(this, TestDataActivity.class));
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

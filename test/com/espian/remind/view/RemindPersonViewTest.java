@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 
 import com.espian.remind.data.Person;
 import com.espian.remind.data.PersonLoader;
+import com.espian.utils.LoadHideHelper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +28,14 @@ public class RemindPersonViewTest {
     public void setUp() {
         mockPersonLoader = mock(PersonLoader.class);
         remindView = new RemindPersonView(Robolectric.application);
-        remindView.setLoader(mockPersonLoader);
+        remindView.photoHideHelper = mock(LoadHideHelper.class);
     }
 
     @Test
     public void testSetPerson_InitiatesACallToGetThePersonsPhoto() {
         Person mockPerson = mock(Person.class);
 
-        remindView.setPerson(mockPerson);
+        remindView.setPerson(mockPersonLoader, mockPerson);
 
         verify(mockPersonLoader).loadPhoto(mockPerson, remindView);
     }

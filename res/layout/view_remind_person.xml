@@ -10,5 +10,6 @@
             android:id="@+id/remind_photo"
             android:layout_gravity="center"
             android:maxWidth="@dimen/photo_dimen"
-            android:maxHeight="@dimen/photo_dimen"/>
+            android:maxHeight="@dimen/photo_dimen"
+            android:background="#ffffff"/>
 </FrameLayout>

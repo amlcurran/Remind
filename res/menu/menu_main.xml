@@ -2,6 +2,10 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+            android:id="@+id/menu_test"
+            android:title="@string/test"
+            android:showAsAction="ifRoom|withText" />
+    <item
             android:id="@+id/menu_add_person"
             android:title="@string/add_person"
             android:showAsAction="ifRoom"

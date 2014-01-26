@@ -40,7 +40,6 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
         adapter = new PersonAdapter(this,
-                new int[]{ android.R.id.text1 },
                 personLoader);
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
@@ -69,11 +68,14 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
 
     public static class PersonAdapter extends SimpleCursorAdapter {
 
+        public static final int[] IDS_TO = new int[]{android.R.id.text1};
+        public static final String[] COLUMNS_FROM = new String[]{ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
         private final Context context;
         private final PersonLoader loader;
 
-        public PersonAdapter(Context context, int[] to, PersonLoader loader) {
-            super(context, R.layout.item_person, null, new String[] { ContactsContract.Contacts.DISPLAY_NAME_PRIMARY }, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        public PersonAdapter(Context context, PersonLoader loader) {
+            super(context, R.layout.item_person, null, COLUMNS_FROM, IDS_TO,
+                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
             this.context = context;
             this.loader = loader;
         }

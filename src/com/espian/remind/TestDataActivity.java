@@ -30,9 +30,7 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
-        adapter = new AddPersonActivity.PersonAdapter(this,
-                new int[]{ android.R.id.text1 },
-                personLoader);
+        adapter = new AddPersonActivity.PersonAdapter(this, personLoader);
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
 

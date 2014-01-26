@@ -5,24 +5,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 
+import com.espian.remind.R;
+import com.espian.remind.view.CircleImageView;
+
 import java.io.InputStream;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 public class ContactContractPersonLoader implements PersonLoader {
 
-    public static final String[] PHOTO_PROJECTION = new String[]{ContactsContract.CommonDataKinds.Photo._ID, ContactsContract.CommonDataKinds.Photo.PHOTO_THUMBNAIL_URI};
-    public static final String PHOTO_SELECTION = ContactsContract.Data._ID + "=?";
     private Activity activity;
-    private Executor executor;
+    private ExecutorService executor;
 
-    public ContactContractPersonLoader(Activity activity, Executor executor) {
+    public ContactContractPersonLoader(Activity activity, ExecutorService executor) {
         this.activity = activity;
         this.executor = executor;
     }
 
     @Override
     public void loadPhoto(final Person person, PhotoRequestCallback callback) {
-        executor.execute(createPhotoRequestRunnable(activity, person, callback));
+        executor.submit(createPhotoRequestRunnable(activity, person, callback));
     }
 
     private static Runnable createPhotoRequestRunnable(final Activity activity, final Person person, final PhotoRequestCallback callback) {
@@ -31,7 +32,8 @@ public class ContactContractPersonLoader implements PersonLoader {
             public void run() {
                 InputStream stream = ContactsContract.Contacts.openContactPhotoInputStream(activity.getContentResolver(),
                         person.getUri(), true);
-                final Bitmap bitmap = BitmapFactory.decodeStream(stream);
+                int dimen = (int) activity.getResources().getDimension(R.dimen.grid_circle_diameter);
+                final Bitmap bitmap = CircleImageView.getCroppedBitmap(BitmapFactory.decodeStream(stream), dimen);
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

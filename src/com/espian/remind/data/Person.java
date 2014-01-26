@@ -26,4 +26,7 @@ public class Person {
         this.id = id;
     }
 
+    public void cancelPhotoLoad() {
+
+    }
 }

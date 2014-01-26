@@ -11,7 +11,7 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.AbsListView;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 
@@ -30,19 +30,19 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY };
     public static final int LOADER_CONTACTS = 0;
 
-    SimpleCursorAdapter adapter;
+    PersonAdapter adapter;
     ContactContractPersonLoader personLoader;
-    AdapterView adapterView;
+    AbsListView adapterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
-        personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
-        adapter = new PersonAdapter(this,
-                personLoader);
-        adapterView = (AdapterView) findViewById(R.id.grid_view);
+        personLoader = new ContactContractPersonLoader(this, Executors.newSingleThreadExecutor());
+        adapter = new PersonAdapter(this, personLoader);
+        adapterView = (AbsListView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
+        adapterView.setRecyclerListener(adapter);
 
         getLoaderManager().initLoader(0, null, this);
     }
@@ -66,7 +66,7 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
         adapter.swapCursor(null);
     }
 
-    public static class PersonAdapter extends SimpleCursorAdapter {
+    public static class PersonAdapter extends SimpleCursorAdapter implements AbsListView.RecyclerListener {
 
         public static final int[] IDS_TO = new int[]{android.R.id.text1};
         public static final String[] COLUMNS_FROM = new String[]{ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
@@ -88,9 +88,18 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
 
             getCursor().moveToPosition(position);
             Person thisRow = Person.fromCursor(getCursor());
+            convertView.setTag(thisRow);
             ((RemindPersonView) convertView).setPerson(loader, thisRow);
 
             return convertView;
+        }
+
+
+        @Override
+        public void onMovedToScrapHeap(View view) {
+            if (view.getTag() != null) {
+                ((Person) view.getTag()).cancelPhotoLoad();
+            }
         }
     }
 

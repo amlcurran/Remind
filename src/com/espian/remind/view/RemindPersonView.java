@@ -56,8 +56,10 @@ public class RemindPersonView extends FrameLayout implements PhotoRequestCallbac
 
     @Override
     public void onPhotoLoaded(Bitmap bitmap) {
-        BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
-        photoImageView.setImageDrawable(drawable);
-        photoHideHelper.show();
+        if (bitmap != null) {
+            BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+            photoImageView.setImageDrawable(drawable);
+            photoHideHelper.show();
+        }
     }
 }

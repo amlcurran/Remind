@@ -4,12 +4,11 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <ImageView
-            android:layout_width="@dimen/photo_dimen"
-            android:layout_height="@dimen/photo_dimen"
+
+    <view
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            class="com.espian.remind.view.CircleImageView"
             android:id="@+id/remind_photo"
-            android:layout_gravity="center"
-            android:maxWidth="@dimen/photo_dimen"
-            android:maxHeight="@dimen/photo_dimen"
-            android:background="#ffffff"/>
+            android:layout_gravity="center"/>
 </FrameLayout>

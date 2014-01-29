@@ -10,6 +10,7 @@ import com.espian.remind.view.CircleImageView;
 
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class ContactContractPersonLoader implements PersonLoader {
 
@@ -22,8 +23,8 @@ public class ContactContractPersonLoader implements PersonLoader {
     }
 
     @Override
-    public void loadPhoto(final Person person, PhotoRequestCallback callback) {
-        executor.submit(createPhotoRequestRunnable(activity, person, callback));
+    public Future loadPhoto(final Person person, PhotoRequestCallback callback) {
+        return executor.submit(createPhotoRequestRunnable(activity, person, callback));
     }
 
     private static Runnable createPhotoRequestRunnable(final Activity activity, final Person person, final PhotoRequestCallback callback) {

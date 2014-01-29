@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.espian.remind.R;
 import com.espian.remind.data.Person;
@@ -15,12 +16,16 @@ import com.espian.remind.data.PersonLoader;
 import com.espian.remind.data.PhotoRequestCallback;
 import com.espian.utils.LoadHideHelper;
 
+import java.util.concurrent.Future;
+
 public class RemindPersonView extends FrameLayout implements PhotoRequestCallback {
 
     private final Paint circlePaint;
     LoadHideHelper photoHideHelper;
     private Person person;
+    public final TextView labelView;
     public final ImageView photoImageView;
+    private Future loadingImageFuture;
 
     public RemindPersonView(Context context) {
         this(context, null, 0);
@@ -37,6 +42,7 @@ public class RemindPersonView extends FrameLayout implements PhotoRequestCallbac
         LayoutInflater.from(context).inflate(R.layout.view_remind_person, this, true);
         photoImageView = (ImageView) findViewById(R.id.remind_photo);
         photoHideHelper = new LoadHideHelper(photoImageView);
+        labelView = (TextView) findViewById(R.id.remind_label);
 
         // Paints and things like that
         circlePaint = new Paint();
@@ -51,7 +57,11 @@ public class RemindPersonView extends FrameLayout implements PhotoRequestCallbac
 
     public void setPerson(PersonLoader loader, Person person) {
         this.person = person;
-        loader.loadPhoto(person, this);
+
+        if (person != null) {
+            labelView.setText(person.getName());
+            loadingImageFuture = loader.loadPhoto(person, this);
+        }
     }
 
     @Override
@@ -60,6 +70,13 @@ public class RemindPersonView extends FrameLayout implements PhotoRequestCallbac
             BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
             photoImageView.setImageDrawable(drawable);
             photoHideHelper.show();
+        } else {
+            photoImageView.setImageDrawable(null);
+            photoHideHelper.show();
         }
+    }
+
+    public void cancelPhotoLoad() {
+        loadingImageFuture.cancel(true);
     }
 }

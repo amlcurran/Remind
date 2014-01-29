@@ -38,7 +38,7 @@ public class AddPersonActivityTest {
     public void whenActivityIsCreated_TheListIsBackedByACursorAdapter() {
         AddPersonActivity activity = Robolectric.buildActivity(AddPersonActivity.class)
                 .create().get();
-        assertEquals(AddPersonActivity.PersonAdapter.class, activity.adapterView.getAdapter().getClass());
+        assertEquals(PersonAdapter.class, activity.adapterView.getAdapter().getClass());
     }
 
     @Test

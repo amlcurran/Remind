@@ -1,7 +1,9 @@
 package com.espian.remind.data;
 
+import java.util.concurrent.Future;
+
 public interface PersonLoader {
 
-    void loadPhoto(Person person, PhotoRequestCallback callback);
+    Future loadPhoto(Person person, PhotoRequestCallback callback);
 
 }

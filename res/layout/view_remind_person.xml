@@ -5,10 +5,9 @@
              android:layout_height="match_parent">
 
 
-    <view
+    <ImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
-            class="com.espian.remind.view.CircleImageView"
             android:id="@+id/remind_photo"
             android:layout_gravity="center"
             android:layout_alignParentLeft="false"
@@ -19,7 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
             android:id="@+id/remind_label"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_below="@+id/remind_photo"

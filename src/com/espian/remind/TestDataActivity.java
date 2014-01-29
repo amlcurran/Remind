@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
 
 import com.espian.remind.data.ContactContractPersonLoader;
+import com.espian.remind.data.Person;
 
 import java.util.concurrent.Executors;
 
@@ -24,13 +25,15 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
     SimpleCursorAdapter adapter;
     ContactContractPersonLoader personLoader;
     AdapterView adapterView;
+    private CursorDataSource<Person> personDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
-        adapter = new PersonAdapter(this, personLoader);
+        personDataSource = new PersonCursorDataSource();
+        adapter = new PersonAdapter(this, personLoader, personDataSource, null);
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
 
@@ -48,7 +51,8 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> objectLoader, Cursor cursor) {
-        adapter.swapCursor(cursor);
+        personDataSource.setCursor(cursor);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

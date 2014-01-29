@@ -19,12 +19,16 @@ public class PersonAdapter extends SimpleCursorAdapter implements AbsListView.Re
     public static final String[] COLUMNS_FROM = new String[]{ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
     private final Context context;
     private final PersonLoader loader;
+    private final DataSource<Person> personSource;
+    private final DataBinder<Person> dataBinder;
 
-    public PersonAdapter(Context context, PersonLoader loader) {
+    public PersonAdapter(Context context, PersonLoader loader, DataSource<Person> dataSource, DataBinder<Person> dataBinder) {
         super(context, R.layout.item_person, null, COLUMNS_FROM, IDS_TO,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         this.context = context;
         this.loader = loader;
+        this.personSource = dataSource;
+        this.dataBinder = dataBinder;
     }
 
     @Override
@@ -41,9 +45,13 @@ public class PersonAdapter extends SimpleCursorAdapter implements AbsListView.Re
     }
 
     @Override
+    public int getCount() {
+        return personSource.getCount();
+    }
+
+    @Override
     public Object getItem(int position) {
-        getCursor().moveToPosition(position);
-        return Person.fromCursor(getCursor());
+        return personSource.getItem(position);
     }
 
     @Override

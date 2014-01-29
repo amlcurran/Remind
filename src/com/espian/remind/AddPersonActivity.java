@@ -30,7 +30,7 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newSingleThreadExecutor());
-        adapter = new PersonAdapter(this, personLoader);
+        adapter = new PersonAdapter(this, personLoader, null, null);
         adapterView = (AbsListView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
         adapterView.setRecyclerListener(adapter);

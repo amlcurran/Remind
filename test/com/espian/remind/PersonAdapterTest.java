@@ -1,7 +1,5 @@
 package com.espian.remind;
 
-import android.database.Cursor;
-
 import com.espian.remind.data.Person;
 import com.espian.remind.data.PersonLoader;
 import com.espian.remind.view.RemindPersonView;
@@ -13,9 +11,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,15 +24,14 @@ public class PersonAdapterTest {
     public void setUp() {
         PersonLoader mockLoader = mock(PersonLoader.class);
         Person mockPerson = mock(Person.class);
-        Cursor mockCursor = mock(Cursor.class);
+        DataSource<Person> mockDataSource = mock(DataSource.class);
+        DataBinder<Person> mockDataBinder = mock(DataBinder.class);
 
         when(mockPerson.getName()).thenReturn("Person name");
 
-        PersonAdapter realAdapter = new PersonAdapter(Robolectric.application, mockLoader);
-        adapter = spy(realAdapter);
+        adapter = new PersonAdapter(Robolectric.application, mockLoader, mockDataSource, mockDataBinder);
 
-        doReturn(mockCursor).when(this.adapter).getCursor();
-        doReturn(mockPerson).when(this.adapter).getItem(2);
+        when(mockDataSource.getItem(2)).thenReturn(mockPerson);
     }
 
     @Test

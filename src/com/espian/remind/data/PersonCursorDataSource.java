@@ -1,6 +1,4 @@
-package com.espian.remind;
-
-import com.espian.remind.data.Person;
+package com.espian.remind.data;
 
 public class PersonCursorDataSource extends CursorDataSource<Person> {
 

@@ -1,4 +1,4 @@
-package com.espian.remind.view;
+package com.espian.remind.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;

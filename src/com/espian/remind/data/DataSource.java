@@ -1,4 +1,4 @@
-package com.espian.remind;
+package com.espian.remind.data;
 
 public interface DataSource<T> {
     int getCount();

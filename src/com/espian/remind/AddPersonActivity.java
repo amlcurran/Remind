@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.widget.AbsListView;
 
 import com.espian.remind.data.ContactContractPersonLoader;
+import com.espian.remind.view.DataSourceAdapter;
 import com.espian.remind.data.Person;
+import com.espian.remind.data.PersonCursorDataSource;
+import com.espian.remind.view.RemindPersonDataBinder;
 
 import java.util.concurrent.Executors;
 

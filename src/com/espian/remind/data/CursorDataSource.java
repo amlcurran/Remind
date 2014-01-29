@@ -1,4 +1,4 @@
-package com.espian.remind;
+package com.espian.remind.data;
 
 import android.database.Cursor;
 

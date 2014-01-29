@@ -11,7 +11,11 @@ import android.view.LayoutInflater;
 import android.widget.AdapterView;
 
 import com.espian.remind.data.ContactContractPersonLoader;
+import com.espian.remind.data.CursorDataSource;
+import com.espian.remind.view.DataSourceAdapter;
 import com.espian.remind.data.Person;
+import com.espian.remind.data.PersonCursorDataSource;
+import com.espian.remind.view.RemindPersonDataBinder;
 
 import java.util.concurrent.Executors;
 
@@ -25,7 +29,7 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
     DataSourceAdapter<Person> adapter;
     ContactContractPersonLoader personLoader;
     AdapterView adapterView;
-    private CursorDataSource<Person> personDataSource;
+    private CursorDataSource<Person> dataSource;
     private RemindPersonDataBinder dataBinder;
 
     @Override
@@ -34,9 +38,9 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
         setContentView(R.layout.activity_grid);
 
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
-        personDataSource = new PersonCursorDataSource();
+        dataSource = new PersonCursorDataSource();
         dataBinder = new RemindPersonDataBinder(LayoutInflater.from(this), personLoader);
-        adapter = new DataSourceAdapter<Person>(personDataSource, dataBinder);
+        adapter = new DataSourceAdapter<Person>(dataSource, dataBinder);
 
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
@@ -55,7 +59,7 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> objectLoader, Cursor cursor) {
-        personDataSource.setCursor(cursor);
+        dataSource.setCursor(cursor);
         adapter.notifyDataSetChanged();
     }
 

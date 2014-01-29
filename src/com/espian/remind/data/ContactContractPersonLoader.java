@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 
 import com.espian.remind.R;
-import com.espian.remind.view.CircleImageView;
+import com.espian.remind.widgets.CircleImageView;
 
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;

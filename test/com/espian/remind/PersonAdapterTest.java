@@ -1,8 +1,11 @@
 package com.espian.remind;
 
+import com.espian.remind.view.DataBinder;
+import com.espian.remind.data.DataSource;
+import com.espian.remind.view.DataSourceAdapter;
 import com.espian.remind.data.Person;
 import com.espian.remind.data.PersonLoader;
-import com.espian.remind.view.RemindPersonView;
+import com.espian.remind.widgets.RemindPersonView;
 
 import org.junit.Before;
 import org.junit.Test;

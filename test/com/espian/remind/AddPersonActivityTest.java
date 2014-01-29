@@ -3,6 +3,8 @@ package com.espian.remind;
 import android.app.LoaderManager;
 import android.database.Cursor;
 
+import com.espian.remind.view.DataSourceAdapter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

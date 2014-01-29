@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,36 +18,36 @@ import static org.mockito.Mockito.when;
 public class PersonAdapterTest {
 
     private PersonAdapter adapter;
+    private DataBinder<Person> mockDataBinder;
+    private DataSource<Person> mockDataSource;
+    private PersonLoader mockLoader;
 
     @Before
     public void setUp() {
-        PersonLoader mockLoader = mock(PersonLoader.class);
-        Person mockPerson = mock(Person.class);
-        DataSource<Person> mockDataSource = mock(DataSource.class);
-        DataBinder<Person> mockDataBinder = mock(DataBinder.class);
+        mockLoader = mock(PersonLoader.class);
+        mockDataSource = mock(DataSource.class);
+        mockDataBinder = mock(DataBinder.class);
 
-        when(mockPerson.getName()).thenReturn("Person name");
-
-        adapter = new PersonAdapter(Robolectric.application, mockLoader, mockDataSource, mockDataBinder);
-
-        when(mockDataSource.getItem(2)).thenReturn(mockPerson);
+        adapter = new PersonAdapter(Robolectric.application, mockDataSource, mockDataBinder);
     }
 
     @Test
-    public void testWhenGetViewIsCalled_TheCorrectPersonIsSetOnTheView() {
-        RemindPersonView view = (RemindPersonView) adapter.getView(2, null, null);
+    public void testWhenGetViewIsCalled_ThePersonIsBoundToTheView() {
+        Person mockPerson = mock(Person.class);
+        when(mockDataSource.getItem(2)).thenReturn(mockPerson);
 
-        assertEquals("Person name", view.labelView.getText());
+        adapter.getView(2, null, null);
+
+        verify(mockDataBinder).bindView(null, mockPerson);
     }
 
     @Test
     public void testWhenViewMovedToScrapHeap_PhotoLoadIsCancelled() {
         RemindPersonView mockRemindView = mock(RemindPersonView.class);
-        when(mockRemindView.getTag()).thenReturn("ANYTHING");
 
         adapter.onMovedToScrapHeap(mockRemindView);
 
-        verify(mockRemindView).cancelPhotoLoad();
+        verify(mockDataBinder).unbindView(mockRemindView);
     }
 
 }

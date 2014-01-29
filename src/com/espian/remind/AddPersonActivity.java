@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.LayoutInflater;
 import android.widget.AbsListView;
 
 import com.espian.remind.data.ContactContractPersonLoader;
@@ -24,13 +25,17 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
     PersonAdapter adapter;
     ContactContractPersonLoader personLoader;
     AbsListView adapterView;
+    private PersonCursorDataSource dataSource;
+    private RemindPersonDataBinder dataBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newSingleThreadExecutor());
-        adapter = new PersonAdapter(this, personLoader, null, null);
+        dataSource = new PersonCursorDataSource();
+        dataBinder = new RemindPersonDataBinder(LayoutInflater.from(this), personLoader);
+        adapter = new PersonAdapter(this, dataSource, dataBinder);
         adapterView = (AbsListView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
         adapterView.setRecyclerListener(adapter);
@@ -49,12 +54,14 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        adapter.swapCursor(cursor);
+        dataSource.setCursor(cursor);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        adapter.swapCursor(null);
+        dataSource.setCursor(null);
+        adapter.notifyDataSetChanged();
     }
 
 }

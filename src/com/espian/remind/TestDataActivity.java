@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
 
@@ -26,6 +27,7 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
     ContactContractPersonLoader personLoader;
     AdapterView adapterView;
     private CursorDataSource<Person> personDataSource;
+    private RemindPersonDataBinder dataBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
         setContentView(R.layout.activity_grid);
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
         personDataSource = new PersonCursorDataSource();
-        adapter = new PersonAdapter(this, personLoader, personDataSource, null);
+        dataBinder = new RemindPersonDataBinder(LayoutInflater.from(this), personLoader);
+        adapter = new PersonAdapter(this, personDataSource, dataBinder);
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
 
@@ -57,6 +60,6 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<Cursor> objectLoader) {
-
+        onLoadFinished(objectLoader, null);
     }
 }

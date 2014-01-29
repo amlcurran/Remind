@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.widget.AdapterView;
-import android.widget.SimpleCursorAdapter;
 
 import com.espian.remind.data.ContactContractPersonLoader;
 import com.espian.remind.data.Person;
@@ -23,7 +22,7 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
             ContactsContract.Contacts.LOOKUP_KEY,
             ContactsContract.Contacts.DISPLAY_NAME_PRIMARY };
 
-    SimpleCursorAdapter adapter;
+    DataSourceAdapter<Person> adapter;
     ContactContractPersonLoader personLoader;
     AdapterView adapterView;
     private CursorDataSource<Person> personDataSource;
@@ -33,10 +32,12 @@ public class TestDataActivity extends Activity implements LoaderManager.LoaderCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
+
         personLoader = new ContactContractPersonLoader(this, Executors.newCachedThreadPool());
         personDataSource = new PersonCursorDataSource();
         dataBinder = new RemindPersonDataBinder(LayoutInflater.from(this), personLoader);
-        adapter = new PersonAdapter(this, personDataSource, dataBinder);
+        adapter = new DataSourceAdapter<Person>(personDataSource, dataBinder);
+
         adapterView = (AdapterView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
 

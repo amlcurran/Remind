@@ -7,7 +7,6 @@ import com.espian.remind.view.RemindPersonView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Mockito.mock;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class PersonAdapterTest {
 
-    private PersonAdapter adapter;
+    private DataSourceAdapter<Person> adapter;
     private DataBinder<Person> mockDataBinder;
     private DataSource<Person> mockDataSource;
     private PersonLoader mockLoader;
@@ -28,7 +27,7 @@ public class PersonAdapterTest {
         mockDataSource = mock(DataSource.class);
         mockDataBinder = mock(DataBinder.class);
 
-        adapter = new PersonAdapter(Robolectric.application, mockDataSource, mockDataBinder);
+        adapter = new DataSourceAdapter<Person>(mockDataSource, mockDataBinder);
     }
 
     @Test

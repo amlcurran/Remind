@@ -38,7 +38,7 @@ public class AddPersonActivityTest {
     public void whenActivityIsCreated_TheListIsBackedByACursorAdapter() {
         AddPersonActivity activity = Robolectric.buildActivity(AddPersonActivity.class)
                 .create().get();
-        assertEquals(PersonAdapter.class, activity.adapterView.getAdapter().getClass());
+        assertEquals(DataSourceAdapter.class, activity.adapterView.getAdapter().getClass());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class AddPersonActivityTest {
         AddPersonActivity activity = Robolectric.buildActivity(AddPersonActivity.class).create().get();
         activity.onLoadFinished(null, swappedCursor);
 
-        Cursor actualResult = activity.adapter.getCursor();
+        Cursor actualResult = activity.dataSource.getCursor();
 
         assertEquals("Cursor result is not swapped in", swappedCursor, actualResult);
     }

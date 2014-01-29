@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.widget.AbsListView;
 
 import com.espian.remind.data.ContactContractPersonLoader;
+import com.espian.remind.data.Person;
 
 import java.util.concurrent.Executors;
 
@@ -22,20 +23,22 @@ public class AddPersonActivity extends Activity implements LoaderManager.LoaderC
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY };
     public static final int LOADER_CONTACTS = 0;
 
-    PersonAdapter adapter;
+    DataSourceAdapter<Person> adapter;
     ContactContractPersonLoader personLoader;
     AbsListView adapterView;
-    private PersonCursorDataSource dataSource;
+    PersonCursorDataSource dataSource;
     private RemindPersonDataBinder dataBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
+
         personLoader = new ContactContractPersonLoader(this, Executors.newSingleThreadExecutor());
         dataSource = new PersonCursorDataSource();
         dataBinder = new RemindPersonDataBinder(LayoutInflater.from(this), personLoader);
-        adapter = new PersonAdapter(this, dataSource, dataBinder);
+        adapter = new DataSourceAdapter<Person>(dataSource, dataBinder);
+
         adapterView = (AbsListView) findViewById(R.id.grid_view);
         adapterView.setAdapter(adapter);
         adapterView.setRecyclerListener(adapter);
